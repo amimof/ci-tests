@@ -30,7 +30,6 @@ jobs:
         CR_RELEASE_NAME_TEMPLATE: "v{{ .Version }}"
         
   releases:
-    if: github.event_name == 'release' && github.event.action == 'created'
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
