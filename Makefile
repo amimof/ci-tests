@@ -149,7 +149,7 @@ integration-test: | $(INTDIR) docker_build ; $(info $(M) running integration tes
 
 .PHONY: helm_lint
 helm_lint: ; $(info $(M) running helm lint) @ ## Verifies that the chart is well-formed
-	helm lint charts/ci-tests/
+	helm lint charts/epic-snoozer/
 
 # Misc
 
