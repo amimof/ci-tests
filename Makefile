@@ -117,34 +117,6 @@ checkfmt: ; $(info $(M) running checkfmt) @ ## Checks if code is formatted with 
 	@test "$(shell $(SRC_FILES) gofmt -l)" = "" \
     || { echo "Code not formatted, please run 'make fmt'"; exit 2; }
 
-.PHONY: checkfmt
-integration-test: | $(INTDIR) docker_build ; $(info $(M) running integration tests) @ ## Run integration tests
-	mkdir -p ${INTDIR}/ssl
-	openssl req -new -newkey rsa:1024 -days 365 -nodes -x509 \
-  	-subj '/CN=localhost/C=SE/L=Gothenburg/O=system:nodes/OU=amimof/ST=Vastra Gotalands Lan' \
-  	-keyout ${INTDIR}/ssl/self-signed-key.pem \
-  	-out ${INTDIR}/ssl/self-signed.pem
-	openssl x509 -in ${INTDIR}/ssl/self-signed.pem -outform der -out ${INTDIR}/ssl/self-signed-bin.cer 
-	docker run -d --name ci-tests --hostname 0a9ad966a64e -v ${INTDIR}/ssl:/certs -p 9117:9117 -e NODE_NAME=docker-node amimof/ci-tests:${VERSION} --logtostderr=true --v=4 --path=/certs
-	sleep 3
-	curl -s http://127.0.0.1:9117/metrics | grep ssl_certificate_expiry_seconds
-	curl -s http://127.0.0.1:9117/metrics | grep 'issuer="CN=localhost,OU=amimof,O=system:nodes,L=Gothenburg,ST=Vastra Gotalands Lan,C=SE"'
-	curl -s http://127.0.0.1:9117/metrics | grep 'path="/certs/self-signed.pem"'
-	curl -s http://127.0.0.1:9117/metrics | grep 'alg="SHA256-RSA"'
-	curl -s http://127.0.0.1:9117/metrics | grep 'dns_names=""'
-	curl -s http://127.0.0.1:9117/metrics | grep 'email_addresses=""'
-	curl -s http://127.0.0.1:9117/metrics | grep 'hostname="0a9ad966a64e"'
-	curl -s http://127.0.0.1:9117/metrics | grep 'nodename="docker-node"'
-	docker kill ci-tests
-	docker rm ci-tests
-	docker run -d --name ci-tests -v ${INTDIR}/ssl:/certs -p 9117:9117 amimof/ci-tests:${VERSION} --logtostderr=true --v=4 --path=/certs --exclude-path=/certs
-	sleep 3
-	if [ "`curl -s http://127.0.0.1:9117/metrics | grep ssl_certificate_expiry_seconds`" != "" ]; then \
-		exit 1; \
-	fi
-	docker kill ci-tests
-	docker rm ci-tests
-
 # Helm 
 
 .PHONY: helm_lint
