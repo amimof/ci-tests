@@ -4,7 +4,9 @@ on:
   push:
     tags:
     - "v*"
-
+    branches:
+    - "main"
+    
 jobs:
   helm:
     runs-on: ubuntu-18.04
