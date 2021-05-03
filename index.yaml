@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   epic-snoozer:
   - apiVersion: v2
+    appVersion: 1.16.2
+    created: "2021-05-03T08:41:43.846374339Z"
+    description: A Helm chart for Kubernetes
+    digest: 49440ab1d742eaf7f12530e859de4be8cf9e1f0b153c1d9f7466528551e8655f
+    name: epic-snoozer
+    type: application
+    urls:
+    - https://github.com/amimof/ci-tests/releases/download/v1.16.2/epic-snoozer-1.16.2.tgz
+    version: 1.16.2
+  - apiVersion: v2
     appVersion: 1.16.0
     created: "2021-05-03T07:59:03.380725458Z"
     description: A Helm chart for Kubernetes
@@ -11,4 +21,4 @@ entries:
     urls:
     - https://github.com/amimof/ci-tests/releases/download/epic-snoozer-0.1.0/epic-snoozer-0.1.0.tgz
     version: 0.1.0
-generated: "2021-05-03T07:59:03.380729959Z"
+generated: "2021-05-03T08:41:43.846382539Z"
